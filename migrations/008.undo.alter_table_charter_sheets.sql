@@ -18,3 +18,8 @@ DROP COLUMN religon_expertise,
 DROP COLUMN sleight_of_hand_expertise,
 DROP COLUMN stealth_expertise,
 DROP COLUMN survival_expertise;
+
+ALTER TABLE weapon_details
+ALTER COLUMN attack_bonus INTEGER NOT NULL ; 
+
+DROP TYPE skill_types;
