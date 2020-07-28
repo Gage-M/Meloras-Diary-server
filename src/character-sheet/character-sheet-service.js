@@ -57,12 +57,84 @@
 */
 
 const CharacterSheetService = {
-    getCharSheetById(db,id){
-        .from('character_sheet AS cs')
-        .select(
-            
+  getCharSheetById(db,id){
+    return db
+      .from('character_sheet AS cs')
+      .select(
+        'cs.experience_points',
+        'cs.proficiency',
+        'cs.strength',
+        'cs.strength_saving_throws_proficiency',
+        'cs.dexterity',
+        'cs.dexterity_saving_throws_proficiency',
+        'cs.constitution',
+        'cs.constitution_saving_throws_proficiency',
+        'cs.intelligence',
+        'cs.intelligence_saving_throws_proficiency',
+        'cs.wisdom',
+        'cs.wisdom_saving_throws_proficiency',
+        'cs.charisma',
+        'cs.charisma_saving_throws_proficiency',
+        'cs.acrobatics_proficiency',
+        'cs.animal_handling_proficiency',
+        'cs.arcana_proficiency',
+        'cs.athletics_proficiency',
+        'cs.deception_proficiency',
+        'cs.history_proficiency',
+        'cs.insight_proficiency',
+        'cs.intimidation_proficiency',
+        'cs.investigation_proficiency',
+        'cs.medicine_proficiency',
+        'cs.nature_proficiency',
+        'cs.perception_proficiency',
+        'cs.performance_proficiency',
+        'cs.persuasion_proficiency',
+        'cs.religion_proficiency',
+        'cs.sleight_of_hand_proficiency',
+        'cs.stealth_proficiency',
+        'cs.survival_proficiency',
+        'cs.other_proficiencies_and_languages',
+        'cs.armor_class',
+        'cs.speed',
+        'cs.max_hit_points',
+        'cs.temporary_hit_points',
+        'cs.current_hit_points',
+        'cs.hit_dice',
+        'cs.death_saves_successe',
+        'cs.death_saves_failures',
+        'cs.attack_and_spellcasting_info',
+        'cs.copper_prices',
+        'cs.silver_prices',
+        'cs.electrum_prices',
+        'cs.gold_prices',
+        'cs.platinum_prices',
+        db.raw(
+          `json_strip_nulls(
+                json_build_object(
+
+                )
+            )AS weapons_inventory`
+        ),
+        db.raw(
+          `json_strip_nulls(
+                json_build_object(
+
+                )
+            )AS item_inventory`
+        ),
+        db.raw(
+          `json_strip_nulls(
+               json_build_object(
+
+               )
+           )AS feats_and_traits` 
         )
-    }
+       
+
+      )
+      .leftJoin()
+      .groupBy()
+  }
 
 };
 
