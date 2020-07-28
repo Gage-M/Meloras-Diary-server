@@ -2,27 +2,27 @@ const xss = require('xss');
 
 
 const serializeHelper = {
-    user(user){
-    },
+  user(user){
+  },
 
-    characterInfo(){
-    },
+  characterInfo(){
+  },
 
-    classAndLevels(){
-    },
+  classAndLevels(){
+  },
 
-    characterSheet(){
-    },
+  characterSheet(){
+  },
 
-    featuresAndTraitsDetails(){
-    },
+  featuresAndTraitsDetails(){
+  },
 
-    itemDetails(){
-    },
+  itemDetails(){
+  },
 
-    weaponDetails(){
-    },
+  weaponDetails(){
+  },
 
-}
+};
 
 module.exports = serializeHelper; 

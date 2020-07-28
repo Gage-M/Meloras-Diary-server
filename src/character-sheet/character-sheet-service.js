@@ -133,7 +133,7 @@ const CharacterSheetService = {
 
       )
       .leftJoin()
-      .groupBy()
+      .groupBy();
   }
 
 };
