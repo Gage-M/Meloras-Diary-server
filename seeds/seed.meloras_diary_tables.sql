@@ -648,62 +648,90 @@ VALUES
 */
 INSERT INTO IF EXISTS feature_trait_details (feature_trait_name, feature_trait_discription)
 VALUES
-    ('Shield Master',"You use shields not just for protection but also for offense. You gain the following benefits while you are wielding a shield:
+    /*3*/(
+        'Shield Master',
+        "You use shields not just for protection but also for offense. You gain the following benefits while you are wielding a shield:
 If you take the Attack action on your turn, you can use a bonus action to try to shove a creature within 5 feet of you with your shield.
 If you aren't incapacitated, you can add your shield's AC bonus to any Dexterity saving throw you make against a spell or other harmful effect that targets only you.
 If you are subjected to an effect that allows you to make a Dexterity saving throw to take only half damage, you can use your reaction to take no damage if you succeed on the saving throw, interposing your shield between yourself and the source of the effect.
-Source: PHB, page 170
-"),
-    ('Tavern Brawler',"Accustomed to rough-and-tumble fighting using whatever weapons happen to be at hand, you gain the following benefits:
+Source: PHB, page 170"
+        ),
+    /*3*/('Tavern Brawler',"Accustomed to rough-and-tumble fighting using whatever weapons happen to be at hand, you gain the following benefits:
 Increase your Strength or Constitution by 1, to a maximum of 20.
 You are proficient with improvised weapons.
 Your unarmed strike uses a d4 for damage.
 When you hit a creature with an unarmed strike or an improvised weapon on your turn, you can use a bonus action to attempt to grapple the target.
-Source: PHB, page 170
-"),
-    ('Mobile',"You are exceptionally speedy and agile. You gain the following benefits:
+Source: PHB, page 170"
+        ),
+    /*1*/(
+        'Mobile',
+        "You are exceptionally speedy and agile. You gain the following benefits:
 Your speed increases by 10 feet.
 When you use the Dash action, difficult terrain doesn't cost you extra movement on that turn.
 When you make a melee attack against a creature, you don't provoke opportunity attacks from that creature for the rest of the turn, whether you hit or not.
-Source: PHB, page 168"),
-    ('War Caster',"Prerequisites: The ability to cast at least one spell
+Source: PHB, page 168"
+        ),
+    /*1.3*/(
+        'War Caster',"Prerequisites: The ability to cast at least one spell
 You have practiced casting spells in the midst of combat, learning techniques that grant you the following benefits:
 You have advantage on Constitution saving throws that you make to maintain your concentration on a spell when you take damage.
 You can perform the somatic components of spells even when you have weapons or a shield in one or both hands.
 When a hostile creature's movement provokes an opportunity attack from you, you can use your reaction to cast a spell at the creature, rather than making an opportunity attack. The spell must have a casting time of 1 action and must target only that creature.
 Source: PHB, page 170"),
-    ('Spell Sniper',"Prerequisites: The ability to cast at least one spell
+    /*1*/('Spell Sniper',"Prerequisites: The ability to cast at least one spell
 You have learned techniques to enhance your attacks with certain kinds of spells, gaining the following benefits:
 When you cast a spell that requires you to make an attack roll, the spell's range is doubled.
 Your ranged spell attacks ignore half cover and three-quarters cover.
 You learn one cantrip that requires an attack roll. Choose the cantrip from the bard, cleric, druid, sorcerer, warlock, or wizard spell list. Your spellcasting ability for this cantrip depends on the spell list you chose from: Charisma for bard, sorcerer, or warlock; Wisdom for cleric or druid; or Intelligence for wizard.
 Source: PHB, page 170"),
-    ('Keen Mind',"You have a mind that can track time, direction, and detail with uncanny precision. You gain the following benefits:
+    /*5*/('Keen Mind',"You have a mind that can track time, direction, and detail with uncanny precision. You gain the following benefits:
 Increase your Intelligence score by 1, to a maximum of 20.
 You always know which way is north.
 You always know the number of hours left before the next sunrise or sunset.
 You can accurately recall anything you have seen or heard within the past month.
 Source: PHB, page 167"),
-    ('Heavy Armor Master',"Prerequisites: Proficiency with heavy armor
+    /*4*/('Heavy Armor Master',"Prerequisites: Proficiency with heavy armor
 You can use your armor to deflect strikes that would kill others. You gain the following benefits:
 Increase your Strength score by 1, to a maximum of 20.
 While you are wearing heavy armor, bludgeoning, piercing, and slashing damage that you take from nonmagical weapons is reduced by 3.
 Source: PHB, page 167"),
-    ('Defense',"[Fighter/Paladin/Ranger]While you are wearing armor, you gain a +1 bonus to AC.
+    /*3*/('Defense',"[Fighter/Paladin/Ranger]While you are wearing armor, you gain a +1 bonus to AC.
 Source: PHB, page 72. Also found in PHB, page 84; PHB, page 91; UATRR, page 3. Available in the SRD."),
-    ('Fancy Footwork',"When you choose this archetype at 3rd level, you learn how to land a strike and then slip away without reprisal.
+    /*5*/('Fancy Footwork',"When you choose this archetype at 3rd level, you learn how to land a strike and then slip away without reprisal.
      During your turn, if you make a melee attack against a creature, that creature can't make opportunity attacks against you for the rest of your turn.
      Source XGE p48"),
-    ('Riposte',"[Battle Master for Fighter]When a creature misses you with a melee attack, you can use your reaction and expend one superiority die to make a melee weapon attack against the creature. If you hit, you add the superiority die to the attack's damage roll.
+    /*3*/('Riposte',"[Battle Master for Fighter]When a creature misses you with a melee attack, you can use your reaction and expend one superiority die to make a melee weapon attack against the creature. If you hit, you add the superiority die to the attack's damage roll.
 Source: PHB, page 74"),
-    ('Darkvision',"A monster/person with Darkvision can see in the dark within a specific radius[60ft by default].
+    /*1.2.3.4.5*/('Darkvision',"A monster/person with Darkvision can see in the dark within a specific radius[60ft by default].
      The monster can see in dim light within the radius as if it were bright light,
      and in Darkness as if it were dim light. The monster can’t discern color in Darkness, only Shades of Gray. Many creatures that live Underground have this Special sense.
      Source: PHB p. 184-185"); 
+/*
+                                             Table "public.features_and_traits"
+      Column      |  Type   | Collation | Nullable |             Default              | Storage | Stats target | Description
+------------------+---------+-----------+----------+----------------------------------+---------+--------------+-------------
+ id               | integer |           | not null | generated by default as identity | plain   |              |
+ feature_trait_id | integer |           | not null |                                  | plain   |              |
+ character_id     | integer |           | not null |                                  | plain   |              |
+*/
 
-INSERT INTO IF EXISTS features_and_traits ()
+INSERT INTO IF EXISTS features_and_traits (feature_trait_id,character_id)
 VALUES
-    (), 
-
+    (1,3),
+    (2,3),
+    (3,1),
+    (4,3),
+    (4,1),
+    (5,1),
+    (6,5), 
+    (7,4),
+    (8,3),
+    (9,5),
+    (10,3),
+    (11,1),
+    (11,2),
+    (11,3),
+    (11,4),
+    (11,5);
 
 COMMIT;
