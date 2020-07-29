@@ -44,9 +44,9 @@ hit_dice TEXT NOT NULL,
 death_saves_successe INTEGER CHECK (death_saves_successe >= 0 AND death_saves_successe <= 3) DEFAULT 0 NOT NULL,
 death_saves_failures INTEGER CHECK (death_saves_failures >= 0 AND death_saves_failures <= 3) DEFAULT 0 NOT NULL,
 attack_and_spellcasting_info TEXT,
-copper_prices INTEGER CHECK (copper_prices > 0) DEFAULT 0 NOT NULL,  
-silver_prices INTEGER CHECK (silver_prices > 0) DEFAULT 0 NOT NULL, 
-electrum_prices INTEGER CHECK (electrum_prices > 0) DEFAULT 0 NOT NULL, 
-gold_prices INTEGER CHECK (gold_prices > 0) DEFAULT 0 NOT NULL, 
-platinum_prices INTEGER CHECK (platinum_prices > 0) DEFAULT 0 NOT NULL
+copper_prices INTEGER CHECK (copper_prices >= 0) DEFAULT 0 NOT NULL,  
+silver_prices INTEGER CHECK (silver_prices >= 0) DEFAULT 0 NOT NULL, 
+electrum_prices INTEGER CHECK (electrum_prices >= 0) DEFAULT 0 NOT NULL, 
+gold_prices INTEGER CHECK (gold_prices >= 0) DEFAULT 0 NOT NULL, 
+platinum_prices INTEGER CHECK (platinum_prices >= 0) DEFAULT 0 NOT NULL
 );
