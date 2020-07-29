@@ -2,6 +2,7 @@ const  xss  = require('xss');
 
 
 
+
 /*
                                                           Table "public.character_info"
        Column       |           Type           | Collation | Nullable |             Default              | Storage  | Stats target | Description
@@ -29,16 +30,8 @@ oof = {
         'char.ideals',
         'char.bonds',
         'char.flaws',
-    )
-}
 
-*/
-
-const CharacterInfoService = {
-  getAllCharacters(db){
-    return db
-      .from('character_info AS char')
-      .select('*',
+           for all => ,
         db.raw('count(DISTINCT char) AS number_of_character'),
         db.raw(
           `json_strip_nulls(
@@ -53,11 +46,8 @@ const CharacterInfoService = {
         'user.id'
       )
       .groupBy('char.id','user.id');
-  },
-  getCharacterById(db,id){
-    return db
-      .from('character_info AS char')
-      .select('*',
+
+       for target => .select('*',
         db.raw('count(DISTINCT char) AS number_of_character'),
         db.raw(
           `json_strip_nulls(
@@ -71,6 +61,21 @@ const CharacterInfoService = {
         'char.player_id',
         'user.id'
       )
+    )
+}
+
+*/
+
+const CharacterInfoService = {
+  getAllCharacters(db){
+    return db
+      .from('character_info AS char')
+      .select();
+  },
+  getCharacterById(db,id){
+    return db
+      .from('character_info AS char')
+      .select()
       .where('char.id', id)
       .first();
   },
@@ -83,7 +88,30 @@ const CharacterInfoService = {
       .then(char => CharacterInfoService.getCharacterById(db,char.id));
   },
   serializeCharacter(char){
-
+    const { creator } = char;
+    return{
+      id:char.id ,
+      player_id: char.id ,
+      date_created: new Date(char.date_created) ,
+      character_name: xss(char.character_name) ,
+      race: xss(char.race) ,
+      background: xss(char.background) ,
+      alignment: xss(char.alignment) ,
+      personality_traits: xss(char.personality_traits) ,
+      ideals: xss(char.ideals),
+      bonds:xss( char.bonds),
+      flaws: xss(char.flaws)
+    };
+  },
+  updateChar(db,id,updateContent){
+    return db('character_sheet')
+      .where({id})
+      .update(updateContent);
+  },
+  delete(db,id){
+    return db('character_sheet')
+            .where({id})
+            .delete();
   }
   
 };

@@ -2,7 +2,6 @@ const express = require('express');
 const UserService = require('./users-service');
 const path = require('path');
 const { serializeUser } = require('./users-service');
-const loggers  = require('../e-logger');
 const logger = require('../e-logger');
 const { userInfo } = require('os');
 
@@ -55,7 +54,7 @@ UserRouter
 
     const numberOfValues = Object.values(updateInfo).filter(Boolean).length;
     if(!numberOfValues){
-      loggers.error('nothing was changed therefor not updated needed');
+      logger.error('nothing was changed therefor not updated needed');
       return res.status(400).json({
         error: {
           message : 'there was nothing sent so update can\'t be processed'
