@@ -116,73 +116,85 @@ WHERE
 const CharacterSheetService = {
   getCharSheetById(db,id){
     return db
-      .from('character_sheet AS cs')
+      .from(
+        'diary_users AS users',
+        'character_info AS info',
+        'classes_and_levels AS levels',
+        'class_details AS class-d',
+        'character_sheet AS char-s',
+        'weapon_inventory AS wep-inv',
+        'features_and_traits AS fat',
+        'feature_trait_details AS ftd',
+        'weapon_details AS wep-d',
+        'item_details AS item-d',
+        'item_inventory AS item-inv'
+      )
       .select(
-        'cs.experience_points',
-        'cs.proficiency',
-        'cs.strength',
-        'cs.strength_saving_throws_proficiency',
-        'cs.dexterity',
-        'cs.dexterity_saving_throws_proficiency',
-        'cs.constitution',
-        'cs.constitution_saving_throws_proficiency',
-        'cs.intelligence',
-        'cs.intelligence_saving_throws_proficiency',
-        'cs.wisdom',
-        'cs.wisdom_saving_throws_proficiency',
-        'cs.charisma',
-        'cs.charisma_saving_throws_proficiency',
-        'cs.acrobatics_proficiency',
-        'cs.animal_handling_proficiency',
-        'cs.arcana_proficiency',
-        'cs.athletics_proficiency',
-        'cs.deception_proficiency',
-        'cs.history_proficiency',
-        'cs.insight_proficiency',
-        'cs.intimidation_proficiency',
-        'cs.investigation_proficiency',
-        'cs.medicine_proficiency',
-        'cs.nature_proficiency',
-        'cs.perception_proficiency',
-        'cs.performance_proficiency',
-        'cs.persuasion_proficiency',
-        'cs.religion_proficiency',
-        'cs.sleight_of_hand_proficiency',
-        'cs.stealth_proficiency',
-        'cs.survival_proficiency',
-        'cs.other_proficiencies_and_languages',
-        'cs.armor_class',
-        'cs.speed',
-        'cs.max_hit_points',
-        'cs.temporary_hit_points',
-        'cs.current_hit_points',
-        'cs.hit_dice',
-        'cs.death_saves_successe',
-        'cs.death_saves_failures',
-        'cs.attack_and_spellcasting_info',
-        'cs.copper_prices',
-        'cs.silver_prices',
-        'cs.electrum_prices',
-        'cs.gold_prices',
-        'cs.platinum_prices',
-        'cs.acrobatics_expertise',
-        'cs.animal_handling_expertise',
-        'cs.arcana_expertise',
-        'cs.athletics_expertise',
-        'cs.deception_expertise',
-        'cs.history_expertise',
-        'cs.insight_expertise',
-        'cs.intimidation_expertise',
-        'cs.investigation_expertise',
-        'cs.medicine_expertise',
-        'cs.nature_expertise',
-        'cs.perception_expertise',
-        'cs.performance_expertise',
-        'cs.persuasion_expertise',
-        'cs.religion_expertise',
-        'cs.sleight_of_hand_expertise',
-        'cs.stealth_expertise',
-        'cs.survival_expertise',
+        'char_s.experience_points',
+        'char_s.proficiency',
+        'char_s.strength',
+        'char_s.strength_saving_throws_proficiency',
+        'char_s.dexterity',
+        'char_s.dexterity_saving_throws_proficiency',
+        'char_s.constitution',
+        'char_s.constitution_saving_throws_proficiency',
+        'char_s.intelligence',
+        'char_s.intelligence_saving_throws_proficiency',
+        'char_s.wisdom',
+        'char_s.wisdom_saving_throws_proficiency',
+        'char_s.charisma',
+        'char_s.charisma_saving_throws_proficiency',
+        'char_s.acrobatics_proficiency',
+        'char_s.animal_handling_proficiency',
+        'char_s.arcana_proficiency',
+        'char_s.athletics_proficiency',
+        'char_s.deception_proficiency',
+        'char_s.history_proficiency',
+        'char_s.insight_proficiency',
+        'char_s.intimidation_proficiency',
+        'char_s.investigation_proficiency',
+        'char_s.medicine_proficiency',
+        'char_s.nature_proficiency',
+        'char_s.perception_proficiency',
+        'char_s.performance_proficiency',
+        'char_s.persuasion_proficiency',
+        'char_s.religion_proficiency',
+        'char_s.sleight_of_hand_proficiency',
+        'char_s.stealth_proficiency',
+        'char_s.survival_proficiency',
+        'char_s.other_proficiencies_and_languages',
+        'char_s.armor_class',
+        'char_s.speed',
+        'char_s.max_hit_points',
+        'char_s.temporary_hit_points',
+        'char_s.current_hit_points',
+        'char_s.hit_dice',
+        'char_s.death_saves_successe',
+        'char_s.death_saves_failures',
+        'char_s.attack_and_spellcasting_info',
+        'char_s.copper_prices',
+        'char_s.silver_prices',
+        'char_s.electrum_prices',
+        'char_s.gold_prices',
+        'char_s.platinum_prices',
+        'char_s.acrobatics_expertise',
+        'char_s.animal_handling_expertise',
+        'char_s.arcana_expertise',
+        'char_s.athletics_expertise',
+        'char_s.deception_expertise',
+        'char_s.history_expertise',
+        'char_s.insight_expertise',
+        'char_s.intimidation_expertise',
+        'char_s.investigation_expertise',
+        'char_s.medicine_expertise',
+        'char_s.nature_expertise',
+        'char_s.perception_expertise',
+        'char_s.performance_expertise',
+        'char_s.persuasion_expertise',
+        'char_s.religion_expertise',
+        'char_s.sleight_of_hand_expertise',
+        'char_s.stealth_expertise',
+        'char_s.survival_expertise',
         db.raw(
           `json_strip_nulls(
                 json_build_object(
@@ -207,10 +219,45 @@ const CharacterSheetService = {
        
 
       )
-      .leftJoin()
+      .where('char_s.id',id )
+      .join(
+        /*[join user => char-info]user.id = info.player_id*/'diary_users AS users',
+        'user.id',
+
+        /*[ join info <= class ] info.id = levels.character_id*/ 'character_info AS info',
+
+
+        /*[getting {array} from class-d]  */'classes_and_levels AS levels',
+
+
+        /* class.id = levels.class_id*/'class_details AS class-d',
+
+
+        /*[join char-s to char-info] char-s.character_id = info.id  */'character_sheet AS char-s',
+
+
+        /*[join wep-d {array} to char-s] wep-inv.character_id = char-s.id */'weapon_inventory AS wep-inv',
+
+
+        /*wep-d.id = wep-inv.weapon_id */'weapon_details AS wep-d',
+        
+        
+        /*[joins ftd {array} to char-s] fat.character_id = char-s.id*/'features_and_traits AS fat',
+        
+        
+        /* ftd.id = fat.feature_trait_id */'feature_trait_details AS ftd',
+
+        
+        /*[joining item-d {array} to char-s] item-inv.character_id = char-s.id */'item_inventory AS item-inv',
+        
+        
+        /*item-inv.item_id = item-d.id */'item_details AS item-d'
+      )
       .groupBy();
   }
 
 };
+
+
 
 module.exports = CharacterSheetService;

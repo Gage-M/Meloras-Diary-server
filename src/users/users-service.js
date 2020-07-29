@@ -1,3 +1,4 @@
+const { default: xss } = require('xss');
 
 
 
@@ -18,11 +19,17 @@ const UserService = {
         'user.date_created',
       )
 
-      .where('user.id',id)
+      .where({id})
       .first();
   },
-  serializeUser(users){
-    
+  serializeUser(user){
+    return {
+      id : user.id,
+      irl_name : xss(user.irl_name),
+      user_name : xss(user.user_name),
+      date_created : new Date(user.date_created),
+      password : xss(user.user_password)
+    };
   },
   insertNewUser(db,newUser){
     return db
@@ -31,6 +38,16 @@ const UserService = {
       .returning('*')
       .then();
   },
+  updateUser(db, id, UpdatedContent){
+    return db('diary_users')
+      .where({id})
+      .update(UpdatedContent);
+  },
+  deleteUser(db,id){
+    return db('diary_users')
+      .where({id})
+      .delete();
+  }
 
 
 
