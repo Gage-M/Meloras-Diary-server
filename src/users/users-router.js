@@ -2,6 +2,9 @@ const express = require('express');
 const UserService = require('./users-service');
 const path = require('path');
 const { serializeUser } = require('./users-service');
+const loggers  = require('../e-logger');
+const logger = require('../e-logger');
+const { userInfo } = require('os');
 
 // UserService.serializeUser();
 
@@ -10,7 +13,7 @@ const UserRouter = express.Router();
 UserRouter
   .route('/')
   .get((req,res,next)=>{
-    UserService(
+    UserService.getAllUsers(
       req.app.get('db')
     )
       .then(items => {
@@ -23,7 +26,8 @@ UserRouter
 
     for (let [key, prop] of Object.entries(newUser)){
       if(!prop){
-        res.json.status(400).json({error:{message : `please make sure that ${key} field is filled out`}});
+        logger.error(`${key} was missing from the POST body`);
+        return res.json.status(400).json({error:{message : `please make sure that ${key} field is filled out`}});
       }
     }
     UserService.insertNewUser(
@@ -38,18 +42,46 @@ UserRouter
 
 
   
-  } )
-
+  } );
+UserRouter
   .route('/:user_id')
   .all(checkIfUserExists)
   .get((req,res,next)=>{
-
+    res.json(serializeUser(res.user));
   })
   .patch((req,res,next)=>{
+    const {user_name, user_password, irl_name, date_created} = req.body;
+    const updateInfo = {user_name, user_password, irl_name};
 
+    const numberOfValues = Object.values(updateInfo).filter(Boolean).length;
+    if(!numberOfValues){
+      loggers.error('nothing was changed therefor not updated needed');
+      return res.status(400).json({
+        error: {
+          message : 'there was nothing sent so update can\'t be processed'
+        }
+      });
+    }
+    updateInfo.date_created = date_created; 
+    UserService.updateUser(
+      req.app.get('db'),
+      req.params.user_id,
+      updateInfo
+    )
+      .then(user =>{
+        return res.status(204).end();
+      })
+      .catch(next);
   })
   .delete((req,res,next)=>{
-
+    UserService.deleteUser(
+      req.app.get('db'),
+      req.params.user_id
+    )
+      .then(()=>{
+        res.status(204).end();
+      })
+      .catch();
   });
 
 /*

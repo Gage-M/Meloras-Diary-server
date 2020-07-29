@@ -1,11 +1,11 @@
-const { default: xss } = require('xss');
+const  xss  = require('xss');
 
 
 
 const UserService = {
   getAllUsers(db) {
     return db
-      .select('')
+      .select()
       .from('diary_users');
   },
 
