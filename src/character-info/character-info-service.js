@@ -108,7 +108,7 @@ const CharacterInfoService = {
       .where({id})
       .update(updateContent);
   },
-  delete(db,id){
+  deleteChar(db,id){
     return db('character_sheet')
             .where({id})
             .delete();

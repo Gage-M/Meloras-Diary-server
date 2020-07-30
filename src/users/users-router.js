@@ -3,7 +3,6 @@ const UserService = require('./users-service');
 const path = require('path');
 const { serializeUser } = require('./users-service');
 const logger = require('../e-logger');
-const { userInfo } = require('os');
 
 // UserService.serializeUser();
 
