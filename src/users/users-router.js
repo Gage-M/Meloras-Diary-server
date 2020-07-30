@@ -4,13 +4,12 @@ const path = require('path');
 const { serializeUser } = require('./users-service');
 const logger = require('../e-logger');
 
-// UserService.serializeUser();
 
 const UserRouter = express.Router();
 
 UserRouter
   .route('/')
-  .get((req,res,next)=>{
+  .get( (req,res,next) => {
     UserService.getAllUsers(
       req.app.get('db')
     )
@@ -18,7 +17,7 @@ UserRouter
         res.json(items.map(serializeUser));
       });
   })
-  .post((req,res,next)=>{
+  .post( (req,res,next) => {
     const {user_name, irl_name, user_password } = req.body;
     const  newUser = {user_name, irl_name, user_password };
 
@@ -102,6 +101,7 @@ async function checkIfUserExists(req,res,next){
       req.params.user_id
     );
     if(!user){
+      logger.error(`call to :user_id == ${req.params.user_id}`);
       return res.status(404).json(
         {error : {
           message : 'sorry but the id your trying tod contact can\'t be reached'

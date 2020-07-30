@@ -82,13 +82,12 @@ const CharacterInfoService = {
   insertNewCharacter(db, newContent){
     return db 
       .insert(newContent)
-      .into('character_sheet')
+      .into('character_info')
       .return('*')
       .then(([char])=> char)
       .then(char => CharacterInfoService.getCharacterById(db,char.id));
   },
   serializeCharacter(char){
-    const { creator } = char;
     return{
       id:char.id ,
       player_id: char.id ,
@@ -104,14 +103,14 @@ const CharacterInfoService = {
     };
   },
   updateChar(db,id,updateContent){
-    return db('character_sheet')
+    return db('character_info')
       .where({id})
       .update(updateContent);
   },
   deleteChar(db,id){
-    return db('character_sheet')
-            .where({id})
-            .delete();
+    return db('character_info')
+      .where({id})
+      .delete();
   }
   
 };

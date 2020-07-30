@@ -5,6 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
 const UserRouter = require('./users/users-router');
+const CharacterInfoRouter = require('./character-sheet/character-sheet-router');
 // const apiTokenHandler = require('./api-token-handler');
 
 
@@ -25,7 +26,7 @@ app.get( '/', (req,res) => {
 });
 
 app.use('/api/user', UserRouter);
-app,use('/api/character',CharacterInfoRouter)
+app.use('/api/character', CharacterInfoRouter);
 
 app.use(function errorHandler(error, req , res , next){/*eslint-disable-line*/
   let response;

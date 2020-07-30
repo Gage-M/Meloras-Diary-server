@@ -6,7 +6,7 @@ const logger = require('../e-logger');
 
 const CharacterInfoRouter = express.Router();
 
-CharacterInfoService
+CharacterInfoRouter
   .route('/')
   .get((req,res,next)=>{
     CharacterInfoService.getAllCharacters(
@@ -62,10 +62,12 @@ CharacterInfoService
       })
       .catch(next);
   });
+
+
 CharacterInfoRouter
   .route('/:character_id')
   .all(checkIfCharacterExists)
-  .get((req,res,next)=>{
+  .get( (req,res,next)=>{
     res.json(serializeCharacter(res.char));
   })
   .patch((req,res,next) => {
@@ -79,7 +81,7 @@ CharacterInfoRouter
       personality_traits,
       ideals,
       bonds,
-      flaws,
+      flaws
     } = req.body;
 
     const updateChar ={
@@ -90,7 +92,7 @@ CharacterInfoRouter
       personality_traits,
       ideals,
       bonds,
-      flaws,
+      flaws
     };
 
     const numOfVal = Object.values(updateChar).filter(Boolean).length;
@@ -106,7 +108,7 @@ CharacterInfoRouter
     updateChar.date_created = date_created; 
     CharacterInfoService.updateChar (
       req.app.get('db'),
-      req.param.character_id,
+      req.params.character_id,
       updateChar
     )
       .then( char =>{
