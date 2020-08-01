@@ -2,6 +2,8 @@ const  xss  = require('xss');
 
 
 
+
+
 const UserService = {
   getAllUsers(db) {
     return db
@@ -21,6 +23,49 @@ const UserService = {
 
       .where({id})
       .first();
+  },
+
+  getAllUsersChar(db, userId){
+    return db 
+      .from('character_info AS char')
+      .select(
+        'char.*',
+        db.raw(
+          `json_strip_nulls(
+                json_build_object(
+                  'user_name' , dsers.user_name,
+                  'date_created' , dsers.date_created
+                )
+            ) AS player_info`
+        ),
+      )
+      .where('char.player_id', userId)
+      .leftJoin('diary_users AS dsers',
+        'char.player_id',
+        'dsers.id'
+      )
+      .groupBy('char.id', 'dsers.id');
+  },
+
+  serializeCharacterOfUser(char){
+    const {player_info} = char ; 
+    return{
+      id:char.id ,
+      player_id: char.id ,
+      date_created: new Date(char.date_created) ,
+      character_name: xss(char.character_name) ,
+      race: xss(char.race) ,
+      background: xss(char.background) ,
+      alignment: xss(char.alignment) ,
+      personality_traits: xss(char.personality_traits) ,
+      ideals: xss(char.ideals),
+      bonds:xss( char.bonds),
+      flaws: xss(char.flaws),
+      player_info : {
+        user_name : xss(player_info.user_name),
+        date_created : new Date(player_info.date_created)
+      }
+    };
   },
   serializeUser(user){
     return {

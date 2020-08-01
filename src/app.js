@@ -5,7 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
 const UserRouter = require('./users/users-router');
-const CharacterInfoRouter = require('./character-sheet/character-sheet-router');
+const CharacterInfoRouter = require('./character-info/character-info-router');
 // const apiTokenHandler = require('./api-token-handler');
 
 
@@ -22,7 +22,7 @@ app.use(cors());
 
 app.get( '/', (req,res) => {
 //   throw new Error('Error makes computer fans go brrrr');
-  res.status(200).send('OwO wi mwaking gwod pwa gwas!');
+  res.status(200).send('this is not the endpoint you should try contacting');
 });
 
 app.use('/api/user', UserRouter);

@@ -1,7 +1,7 @@
 const express = require('express');
 const UserService = require('./users-service');
 const path = require('path');
-const { serializeUser } = require('./users-service');
+const { serializeUser, serializeCharacterOfUser } = require('./users-service');
 const logger = require('../e-logger');
 
 
@@ -81,19 +81,19 @@ UserRouter
       .catch();
   });
 
-/*
-  .route('/:user_id/:char_id')
+UserRouter
+  .route('/:user_id/character')
   .get((req,res,next)=>{
+    UserService.getAllUsersChar(
+      req.app.get('db'),
+      req.params.user_id
+    )
+      .then(char => res.json(char.map(a => serializeCharacterOfUser(a))))
+      .catch(next);
+  });
 
-  })
-  .patch((req,res,next)=>{
 
-  })
-  .delete((req,res,next)=>{
 
-  })
-  
-*/
 async function checkIfUserExists(req,res,next){
   try{
     const user = await UserService.getByUserById(
