@@ -68,6 +68,7 @@ CharacterInfoRouter
 
 CharacterInfoRouter
   .route('/:character_id')
+  .all(requiresAuth)
   .all(checkIfCharacterExists)
   .get( (req,res,next)=>{
     res.json(serializeCharacter(res.char));

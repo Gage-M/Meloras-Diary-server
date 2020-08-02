@@ -3,6 +3,7 @@ const UserService = require('./users-service');
 const path = require('path');
 const { serializeUser, serializeCharacterOfUser } = require('./users-service');
 const logger = require('../e-logger');
+const requiresAuth = require('../middleware/basic-auth')
 
 
 const UserRouter = express.Router();
@@ -83,7 +84,7 @@ UserRouter
 
 UserRouter
   .route('/:user_id/character')
-  .get((req,res,next)=>{
+  .get(checkIfUserExists, requiresAuth, (req,res,next)=>{
     UserService.getAllUsersChar(
       req.app.get('db'),
       req.params.user_id
