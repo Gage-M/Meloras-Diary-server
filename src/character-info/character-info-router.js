@@ -2,13 +2,15 @@ const express = require('express');
 const path = require('path');
 const CharacterInfoService = require('./character-info-service');
 const { serializeCharacter } = require('./character-info-service');
+const requiresAuth = require('../middleware/basic-auth')
 const logger = require('../e-logger');
 
 const CharacterInfoRouter = express.Router();
+const jsonMiddleware = express.json()
 
 CharacterInfoRouter
   .route('/')
-  .get((req,res,next)=>{
+  .get( (req,res,next)=>{
     CharacterInfoService.getAllCharacters(
       req.app.get('db')
     )
@@ -16,7 +18,7 @@ CharacterInfoRouter
         res.json(char.map(serializeCharacter));
       });
   })
-  .post((req,res,next)=> {
+  .post( requiresAuth, jsonMiddleware, (req,res,next,)=> {
     const {
       player_id,
       date_created,

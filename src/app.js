@@ -6,7 +6,7 @@ const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
 const UserRouter = require('./users/users-router');
 const CharacterInfoRouter = require('./character-info/character-info-router');
-// const apiTokenHandler = require('./api-token-handler');
+// const apiTokenHandler = require('./auth/api-token-handler');
 
 
 const app = express();
@@ -18,6 +18,7 @@ const morganOption = (NODE_ENV === 'production')
 app.use(morgan(morganOption));
 app.use(helmet());
 app.use(cors());
+
 // app.use(apiTokenHandler());
 
 app.get( '/', (req,res) => {

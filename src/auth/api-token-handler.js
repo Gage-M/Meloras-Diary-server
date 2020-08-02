@@ -1,5 +1,5 @@
-const { API_TOKEN } = require('./config');
-const logger = require('./e-logger');
+const { API_TOKEN } = require('../config');
+const logger = require('../e-logger');
 
 module.exports = function apiTokenAuth(req,res,next){
   const token = req.get('Authorization');
