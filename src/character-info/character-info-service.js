@@ -83,7 +83,7 @@ const CharacterInfoService = {
     return db 
       .insert(newContent)
       .into('character_info')
-      .return('*')
+      .returning('*')
       .then(([char])=> char)
       .then(char => CharacterInfoService.getCharacterById(db,char.id));
   },

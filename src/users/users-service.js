@@ -12,6 +12,7 @@ const UserService = {
   },
 
   getByUserById(db,id){
+    console.log('id ===',id);
     return db
       .from('diary_users AS user')
       .select(
@@ -20,7 +21,6 @@ const UserService = {
         'user.user_name',
         'user.date_created',
       )
-
       .where({id})
       .first();
   },

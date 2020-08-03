@@ -3,7 +3,8 @@ const UserService = require('./users-service');
 const path = require('path');
 const { serializeUser, serializeCharacterOfUser } = require('./users-service');
 const logger = require('../e-logger');
-const requiresAuth = require('../middleware/basic-auth')
+const requiresAuth = require('../middleware/basic-auth');
+const { all } = require('../character-info/character-info-router');
 
 
 const UserRouter = express.Router();
@@ -41,12 +42,28 @@ UserRouter
 
   
   } );
+
+UserRouter
+  .route('/authKey')
+  .get( requiresAuth,(req,res,next) => {
+    
+    const user  = req.user;
+    if(!user){
+      return res.status(401).json({error : {message: 'user do not exist'}});
+    }
+
+    UserService.getByUserById(
+      req.app.get('db'),
+      user.id
+    )
+      .then(prom => {
+        return res.json(serializeUser(prom));
+      })
+      .catch(next);
+  });
 UserRouter
   .route('/:user_id')
   .all(checkIfUserExists)
-  .get((req,res,next)=>{
-    res.json(serializeUser(res.user));
-  })
   .patch((req,res,next)=>{
     const {user_name, user_password, irl_name, date_created} = req.body;
     const updateInfo = {user_name, user_password, irl_name};
@@ -82,6 +99,8 @@ UserRouter
       .catch();
   });
 
+
+
 UserRouter
   .route('/:user_id/character')
   .get(checkIfUserExists, requiresAuth, (req,res,next)=>{
@@ -96,6 +115,7 @@ UserRouter
 
 
 async function checkIfUserExists(req,res,next){
+  console.log('reeeeeeeeeee');
   try{
     const user = await UserService.getByUserById(
       req.app.get('db'),

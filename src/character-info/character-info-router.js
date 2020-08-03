@@ -2,11 +2,11 @@ const express = require('express');
 const path = require('path');
 const CharacterInfoService = require('./character-info-service');
 const { serializeCharacter } = require('./character-info-service');
-const requiresAuth = require('../middleware/basic-auth')
+const requiresAuth = require('../middleware/basic-auth');
 const logger = require('../e-logger');
 
 const CharacterInfoRouter = express.Router();
-const jsonMiddleware = express.json()
+const jsonMiddleware = express.json();
 
 CharacterInfoRouter
   .route('/')
@@ -19,9 +19,8 @@ CharacterInfoRouter
       });
   })
   .post( requiresAuth, jsonMiddleware, (req,res,next,)=> {
+    const { newCharacter } = req.body ;
     const {
-      player_id,
-      date_created,
       character_name,
       race,
       background,
@@ -29,11 +28,9 @@ CharacterInfoRouter
       personality_traits,
       ideals,
       bonds,
-      flaws, } = req.body;
+      flaws, } = newCharacter;
     
-    const newChar ={
-      player_id,
-      date_created,
+    const newChar = {
       character_name,
       race,
       background,
@@ -43,7 +40,6 @@ CharacterInfoRouter
       bonds,
       flaws,
     };
-
     for(const [key, prop] of Object.entries(newChar)){
       if(!prop){
         logger.error(`${key} was missing from req.body`);
@@ -54,6 +50,10 @@ CharacterInfoRouter
         });
       }
     }
+
+    newChar.player_id = req.user.id;
+
+
 
     CharacterInfoService.insertNewCharacter(req.app.get('db'), newChar)
       .then( char => {
@@ -68,7 +68,7 @@ CharacterInfoRouter
 
 CharacterInfoRouter
   .route('/:character_id')
-  .all(requiresAuth)
+  
   .all(checkIfCharacterExists)
   .get( (req,res,next)=>{
     res.json(serializeCharacter(res.char));

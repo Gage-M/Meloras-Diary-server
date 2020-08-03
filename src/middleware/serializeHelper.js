@@ -1,28 +1,28 @@
-const xss = require('xss');
+// const xss = require('xss');
 
 
-const serializeHelper = {
-  user(user){
-  },
+// const serializeHelper = {
+//   user(user){
+//   },
 
-  characterInfo(){
-  },
+//   characterInfo(){
+//   },
 
-  classAndLevels(){
-  },
+//   classAndLevels(){
+//   },
 
-  characterSheet(){
-  },
+//   characterSheet(){
+//   },
 
-  featuresAndTraitsDetails(){
-  },
+//   featuresAndTraitsDetails(){
+//   },
 
-  itemDetails(){
-  },
+//   itemDetails(){
+//   },
 
-  weaponDetails(){
-  },
+//   weaponDetails(){
+//   },
 
-};
+// };
 
-module.exports = serializeHelper; 
+// module.exports = serializeHelper; 
