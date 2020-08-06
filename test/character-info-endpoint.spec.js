@@ -2,6 +2,7 @@ const knex = require('knex');
 const app =require('../src/app');
 const helpers = require('./testHelper');
 const { head } = require('../src/app');
+const { expect } = require('chai');
 
 
 describe('Character_info Endpoint', ()=> {
@@ -88,6 +89,46 @@ describe('Character_info Endpoint', ()=> {
                 .set('Authorization' , helpers.makeAuthHeader(testUsers[0]))
                 .send(newCharacter)
                 .expect(201)
+                .expect(res => {
+                    expect(res.body).to.have.property('id')
+                    expect(res.body.player_id).to.eql(newCharacter.player_id)
+                    expect(res.body.character_name).to.eql(newCharacter).character_name
+                    expect(res.body.race).to.eql(newCharacter.race)
+                    expect(res.body.background).to.eql(newCharacter.background)
+                    expect(res.body.alignment).to.eql(newCharacter.alignment)
+                    expect(res.body.gender).to.eql(newCharacter.gender)
+                    expect(res.body.personality_traits).to.eql(newCharacter.personality_traits)
+                    expect(res.body.ideals).to.eql(newCharacter.ideals)
+                    expect(res.body.fears).to.eql(newCharacter.fears)
+                    expect(res.body.notes).to.eql(newCharacter.notes)
+                    expect(res.header.location).to.eql(`api/character/${res.body.id}`)
+                    const expectedDate = new Date().toLocaleDateString()
+                    const actualDate = new Date(res.body.date_created).toLocaleDateString()
+                    expect(actualDate).to.eql(expectedDate)
+                })
+                .expect(res => 
+                    db
+                        .from('character_info')
+                        .select()
+                        .where({id : res.body.id})
+                        .first()
+                        .then( row => {
+                            expect(row.body.player_id).to.eql(newCharacter.player_id)
+                            expect(row.body.character_name).to.eql(newCharacter).character_name
+                            expect(row.body.race).to.eql(newCharacter.race)
+                            expect(row.body.background).to.eql(newCharacter.background)
+                            expect(row.body.alignment).to.eql(newCharacter.alignment)
+                            expect(row.body.gender).to.eql(newCharacter.gender)
+                            expect(row.body.personality_traits).to.eql(newCharacter.personality_traits)
+                            expect(row.body.ideals).to.eql(newCharacter.ideals)
+                            expect(row.body.fears).to.eql(newCharacter.fears)
+                            expect(row.body.notes).to.eql(newCharacter.notes)
+                            expect(row.header.location).to.eql(`api/character/${row.body.id}`)
+                            const expectedDate = new Date().toLocaleDateString()
+                            const actualDate = new Date(row.body.date_created).toLocaleDateString()
+                            expect(actualDate).to.eql(expectedDate)
+                        })
+                    )
 
         })
       })
