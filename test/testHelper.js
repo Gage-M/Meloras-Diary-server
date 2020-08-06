@@ -16,7 +16,7 @@ const seedCharacterTable = (db, users, characters=[]) => {
     await trx.into('character_info').insert(characters);
 
     await trx.raw(
-      `SELECT setval('diary_users_id_swq', ?)`,
+      `SELECT setval('diary_users_id_seq', ?)`,
       [characters[characters.length - 1 ].id]
     );
   });
@@ -66,7 +66,7 @@ const makeCharacterArray = () => {
     {
       id: 1 ,
       player_id : 3 ,
-      date_created : new Date('2029-01-22T16:28:32.615Z') ,
+      date_created : '2029-01-22T16:28:32.615Z' ,
       character_name :'test 1' ,
       race : 'human',
       background : 't-pose town folk',
@@ -76,12 +76,11 @@ const makeCharacterArray = () => {
       ideals : 'test 1',
       fears : 'test 1' ,
       notes : 'test 1',
-
     },
     {
       id: 2 ,
       player_id : 1 ,
-      date_created : new Date('2029-01-22T16:28:32.615Z') ,
+      date_created : '2029-01-22T16:28:32.615Z' ,
       character_name :' test 2' ,
       race : 'human',
       background : 't-pose town folk',
@@ -91,12 +90,11 @@ const makeCharacterArray = () => {
       ideals : 'test 22',
       fears : 'test 22' ,
       notes : 'test 22',
-
     },
     {
       id: 3 ,
       player_id : 1 ,
-      date_created : new Date('2029-01-22T16:28:32.615Z') ,
+      date_created : '2029-01-22T16:28:32.615Z' ,
       character_name :'test 3 ' ,
       race : 'duck',
       background : 't-pose town folk',
@@ -106,12 +104,11 @@ const makeCharacterArray = () => {
       ideals : 'test 333',
       fears : 'test 333' ,
       notes : 'test 333',
-
     },
     {
       id: 4 ,
       player_id : 2 ,
-      date_created : new Date('2029-01-22T16:28:32.615Z') ,
+      date_created : '2029-01-22T16:28:32.615Z' ,
       character_name :' test 4' ,
       race : 'human',
       background : 't-pose town folk',
@@ -121,12 +118,11 @@ const makeCharacterArray = () => {
       ideals : 'test 4444',
       fears : 'test 4444' ,
       notes : 'test 4444',
-
     },
     {
       id:  5 ,
       player_id : 3 ,
-      date_created : new Date('2029-01-22T16:28:32.615Z') ,
+      date_created : '2029-01-22T16:28:32.615Z' ,
       character_name :' test 5' ,
       race : 'human',
       background : 't-pose town folk',
@@ -136,7 +132,6 @@ const makeCharacterArray = () => {
       ideals : 'test 55555',
       fears : 'test 55555' ,
       notes : 'test 55555',
-
     }
   ];
 };
@@ -158,15 +153,15 @@ const clearTable = (db) => {
     trx.raw(
       `TRUNCATE
              diary_users,
-             character_info
+             character_info;
              `
     )
       .then(()=> 
         Promise.all([
-          trx.raw(`ALTER SEQUENCE diary_users minvalue 0 START WITH 1`),
-          trx.raw(`ALTER SEQUENCE character_info minvalue 0 START WITH 1`),
-          trx.raw(`SELECT setval('diary_users',0)`),
-          trx.raw(`SELECT setval('character_info',0)`)
+          trx.raw(`ALTER SEQUENCE diary_users_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`ALTER SEQUENCE character_info_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`SELECT setval('diary_users_id_seq',0)`),
+          trx.raw(`SELECT setval('character_info_id_seq',0)`),
         ])
       )
   );
