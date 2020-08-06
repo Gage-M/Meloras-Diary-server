@@ -12,7 +12,6 @@ const UserService = {
   },
 
   getByUserById(db,id){
-    console.log('id ===',id);
     return db
       .from('diary_users AS user')
       .select(
@@ -48,7 +47,8 @@ const UserService = {
   },
 
   serializeCharacterOfUser(char){
-    const {player_info} = char ; 
+    const { player_info } = char ; 
+    console.log('char @ player_info is ===', player_info.user_name);
     return{
       id:char.id ,
       player_id: char.id ,
@@ -57,10 +57,11 @@ const UserService = {
       race: xss(char.race) ,
       background: xss(char.background) ,
       alignment: xss(char.alignment) ,
+      gender: xss(char.gender), 
       personality_traits: xss(char.personality_traits) ,
       ideals: xss(char.ideals),
-      bonds:xss( char.bonds),
-      flaws: xss(char.flaws),
+      fears:xss( char.fears),
+      notes: xss(char.notes),
       player_info : {
         user_name : xss(player_info.user_name),
         date_created : new Date(player_info.date_created)

@@ -4,7 +4,7 @@ const path = require('path');
 const { serializeUser, serializeCharacterOfUser } = require('./users-service');
 const logger = require('../e-logger');
 const requiresAuth = require('../middleware/basic-auth');
-const { all } = require('../character-info/character-info-router');
+
 
 
 const UserRouter = express.Router();
@@ -51,6 +51,7 @@ UserRouter
     if(!user){
       return res.status(401).json({error : {message: 'user do not exist'}});
     }
+
 
     UserService.getByUserById(
       req.app.get('db'),
@@ -115,7 +116,6 @@ UserRouter
 
 
 async function checkIfUserExists(req,res,next){
-  console.log('reeeeeeeeeee');
   try{
     const user = await UserService.getByUserById(
       req.app.get('db'),

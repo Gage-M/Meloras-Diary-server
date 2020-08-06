@@ -72,8 +72,8 @@ VALUES
  alignment          | alignment_choice         |           | not null | 'Neutral'::alignment_choice      | plain    |              |
  personality_traits | text                     |           | not null |                                  | extended |              |
  ideals             | text                     |           | not null |                                  | extended |              |
- bonds              | text                     |           | not null |                                  | extended |              |
- flaws              | text                     |           | not null |                                  | extended |              |
+ fears              | text                     |           | not null |                                  | extended |              |
+ notes              | text                     |           | not null |                                  | extended |              |
         alignment_choice
         |Lawful-Good    +|
         |Neutral-Good   +|
@@ -87,16 +87,17 @@ VALUES
 
 */
 
-INSERT INTO character_info (player_id,character_name,race,background,alignment,personality_traits,ideals,bonds,flaws)
+INSERT INTO character_info (player_id,character_name,race,background,alignment,gender,personality_traits,ideals,fears,notes)
 VALUES
     (1,
     'Little Light',
     'Tiefling',
     'Smuggler',
     'Chaotic-Good',
+    'Male',
     'life is to short so squander away coins, and jems. the only thing that''s worth anything, is a smile',
     'stealing is for fools that can''t enjoy life as it is.',
-    'someone that i was look after died in my care, i will never let that happen again',
+    'letting is bloodline get to him',
     'I let my emotions get the best of me'
     ),
     (3,
@@ -104,9 +105,10 @@ VALUES
     'Tiefling',
     'Criminal',
     'Chaotic-Neutral',
+    'Female',
     'there is nothing better then haveing good friends, regardles of who they are',
     'I want nothing more then to live my life how i see fit (freedom)',
-    'I hate what I''ve done, and I want to atton for my sins',
+    'fealing like she doen''t know something and looking stupid',
     'I''m not good under preshor, I will run if things start to look bad'
     ),
     (4,
@@ -114,9 +116,10 @@ VALUES
     'High Elf',
     'Soldier(officer)',
     'Chaotic-Good',
+    'Female',
     'Not when shy when it comes to getting into fights, it''s all in good fun I say',
     'Fight smart! & with care for those around me.',
-    'I fight for those who can''t do so for them selfs (for greater good)',
+    'Not being like, and being without friends',
     'If it can help, I will take it'
     ),
     (2,
@@ -124,9 +127,10 @@ VALUES
     'Hill Dwarf',
     'Guild Artisan',
     'Chaotic-Good',
+    'Male',
     'I like to talk about my profession... At Length',
     'Explore as much of the world as passible and expirience the variety of architecture and Stone Structors',
-    'I will one dat return to my Guild And share my Knowledge',
+    'being stuck doing the same thing everyday',
     'I''m quick to assume that peopel are trying to cheat me, especially humans'
     ),
     (2,
@@ -134,9 +138,10 @@ VALUES
     'Tabaxi',
     'Sailor',
     'Chaotic-Good',
+    'Male',
     'Work Hard/ Party Hard! Spends Gold on partys/gifts/ [curiosity] = elastic hair ties',
     'what the point of like if it''s by someone elses rules(freedom)',
-    'Cheated out of a Fair share, Waiting to get Due',
+    'being used or cheated',
     'Hubris'
     );
 

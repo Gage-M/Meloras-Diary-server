@@ -16,8 +16,8 @@ const  xss  = require('xss');
  alignment          | alignment_choice         |           | not null | 'Neutral'::alignment_choice      | plain    |              |
  personality_traits | text                     |           | not null |                                  | extended |              |
  ideals             | text                     |           | not null |                                  | extended |              |
- bonds              | text                     |           | not null |                                  | extended |              |
- flaws              | text                     |           | not null |                                  | extended |              |
+ fears              | text                     |           | not null |                                  | extended |              |
+ notes              | text                     |           | not null |                                  | extended |              |
 
 oof = {
     select(
@@ -26,10 +26,11 @@ oof = {
         'char.race',
         'char.background',
         'char.alignment',
+        'char.gender',
         'char.personality_traits',
         'char.ideals',
-        'char.bonds',
-        'char.flaws',
+        'char.fears',
+        'char.notes',
 
            for all => ,
         db.raw('count(DISTINCT char) AS number_of_character'),
@@ -96,10 +97,11 @@ const CharacterInfoService = {
       race: xss(char.race) ,
       background: xss(char.background) ,
       alignment: xss(char.alignment) ,
+      gender : xss(char.gender),
       personality_traits: xss(char.personality_traits) ,
       ideals: xss(char.ideals),
-      bonds:xss( char.bonds),
-      flaws: xss(char.flaws)
+      fears:xss( char.fears),
+      notes: xss(char.notes)
     };
   },
   updateChar(db,id,updateContent){

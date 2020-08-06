@@ -25,20 +25,22 @@ CharacterInfoRouter
       race,
       background,
       alignment,
+      gender,
       personality_traits,
       ideals,
-      bonds,
-      flaws, } = newCharacter;
+      fears,
+      notes, } = newCharacter;
     
     const newChar = {
       character_name,
       race,
       background,
       alignment,
+      gender,
       personality_traits,
       ideals,
-      bonds,
-      flaws,
+      fears,
+      notes,
     };
     for(const [key, prop] of Object.entries(newChar)){
       if(!prop){
@@ -81,10 +83,11 @@ CharacterInfoRouter
       race,
       background,
       alignment,
+      gender,
       personality_traits,
       ideals,
-      bonds,
-      flaws
+      fears,
+      notes
     } = req.body;
 
     const updateChar ={
@@ -92,10 +95,11 @@ CharacterInfoRouter
       race,
       background,
       alignment,
+      gender,
       personality_traits,
       ideals,
-      bonds,
-      flaws
+      fears,
+      notes
     };
 
     const numOfVal = Object.values(updateChar).filter(Boolean).length;

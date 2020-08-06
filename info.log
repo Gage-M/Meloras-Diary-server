@@ -16,3 +16,4 @@
 {"message":"character_name was missing from req.body","level":"error"}
 {"message":"character_name was missing from req.body","level":"error"}
 {"message":"character_name was missing from req.body","level":"error"}
+{"message":"call to :character_id == 8","level":"error"}
