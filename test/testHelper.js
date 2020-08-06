@@ -1,5 +1,26 @@
+/* eslint-disable quotes */
 
-const seedUsers = ( ) => {};
+const seedUsers = (db, users ) => {
+  return db.into('diary_users').insert(users)
+    .then(()=>
+      db.raw(
+        'SELECT setval(\'diary_users_id_seq\', ?)',
+        [users[users.length - 1 ].id],
+      )
+    );
+};
+
+const seedCharacterTable = (db, users, characters=[]) => {
+  return db.transaction(async trx =>{
+    await seedUsers(trx,users);
+    await trx.into('character_info').insert(characters);
+
+    await trx.raw(
+      `SELECT setval('diary_users_id_swq', ?)`,
+      [characters[characters.length - 1 ].id]
+    );
+  });
+}; 
 
 const makeUsersArray = () => {
   return [
@@ -43,72 +64,115 @@ const makeCharacterFixtures = () => {
 const makeCharacterArray = () => {
   return [
     {
-        id: ,
-        player_id : ,
-        date_created : ,
-        character_name :'' ,
-        race : '',
-        background : '',
-        alignment : '',/*ENUM*/
-        gender : '', /*ENUM*/
+      id: 1 ,
+      player_id : 3 ,
+      date_created : new Date('2029-01-22T16:28:32.615Z') ,
+      character_name :'test 1' ,
+      race : 'human',
+      background : 't-pose town folk',
+      alignment : 'Neutral',/*ENUM*/
+      gender : 'Other', /*ENUM*/
+      personality_traits : 'test 1',
+      ideals : 'test 1',
+      fears : 'test 1' ,
+      notes : 'test 1',
 
     },
     {
-        id: ,
-        player_id : ,
-        date_created : ,
-        character_name :'' ,
-        race : '',
-        background : '',
-        alignment : '',/*ENUM*/
-        gender : '', /*ENUM*/
+      id: 2 ,
+      player_id : 1 ,
+      date_created : new Date('2029-01-22T16:28:32.615Z') ,
+      character_name :' test 2' ,
+      race : 'human',
+      background : 't-pose town folk',
+      alignment : 'Neutral',/*ENUM*/
+      gender : 'Other', /*ENUM*/
+      personality_traits : 'test 2',
+      ideals : 'test 22',
+      fears : 'test 22' ,
+      notes : 'test 22',
 
     },
     {
-        id: ,
-        player_id : ,
-        date_created : ,
-        character_name :'' ,
-        race : '',
-        background : '',
-        alignment : '',/*ENUM*/
-        gender : '', /*ENUM*/
+      id: 3 ,
+      player_id : 1 ,
+      date_created : new Date('2029-01-22T16:28:32.615Z') ,
+      character_name :'test 3 ' ,
+      race : 'duck',
+      background : 't-pose town folk',
+      alignment : 'Neutral',/*ENUM*/
+      gender : 'Other', /*ENUM*/
+      personality_traits : 'test 333',
+      ideals : 'test 333',
+      fears : 'test 333' ,
+      notes : 'test 333',
 
     },
     {
-        id: ,
-        player_id : ,
-        date_created : ,
-        character_name :'' ,
-        race : '',
-        background : '',
-        alignment : '',/*ENUM*/
-        gender : '', /*ENUM*/
+      id: 4 ,
+      player_id : 2 ,
+      date_created : new Date('2029-01-22T16:28:32.615Z') ,
+      character_name :' test 4' ,
+      race : 'human',
+      background : 't-pose town folk',
+      alignment : 'Neutral',/*ENUM*/
+      gender : 'Other', /*ENUM*/
+      personality_traits : 'test 4444',
+      ideals : 'test 4444',
+      fears : 'test 4444' ,
+      notes : 'test 4444',
 
     },
     {
-        id: ,
-        player_id : ,
-        date_created : ,
-        character_name :'' ,
-        race : '',
-        background : '',
-        alignment : '',/*ENUM*/
-        gender : '', /*ENUM*/
+      id:  5 ,
+      player_id : 3 ,
+      date_created : new Date('2029-01-22T16:28:32.615Z') ,
+      character_name :' test 5' ,
+      race : 'human',
+      background : 't-pose town folk',
+      alignment : 'Neutral',/*ENUM*/
+      gender : 'Other', /*ENUM*/
+      personality_traits : 'test 55555',
+      ideals : 'test 55555',
+      fears : 'test 55555' ,
+      notes : 'test 55555',
 
     }
   ];
 };
 
-const makeExpectedCharacter = () => {};
+const makeExpectedUserCharacter = () => {
 
-const makeAuthHeader = user => {};
+
+};
+
+const makeAuthHeader = user => {
+  const token = Buffer.from(`${user.user_name}:${user.user_password}`).toString('base64');
+  return `Basic ${token}`;
+};
 
 const makeExpected = () => {};
 
-const clearTable = () => {};
+const clearTable = (db) => {
+  return db.transaction(trx => 
+    trx.raw(
+      `TRUNCATE
+             diary_users,
+             character_info
+             `
+    )
+      .then(()=> 
+        Promise.all([
+          trx.raw(`ALTER SEQUENCE diary_users minvalue 0 START WITH 1`),
+          trx.raw(`ALTER SEQUENCE character_info minvalue 0 START WITH 1`),
+          trx.raw(`SELECT setval('diary_users',0)`),
+          trx.raw(`SELECT setval('character_info',0)`)
+        ])
+      )
+  );
+};
 
-const seedCharacterTable = () => {}; 
+
 
 const seedMaliciousCharacter = () => {};
 
@@ -116,8 +180,9 @@ const seedMaliciousCharacter = () => {};
 module.exports = {
   seedUsers,
   makeUsersArray,
+  makeCharacterFixtures,
   makeCharacterArray,
-  makeExpectedCharacter,
+  makeExpectedUserCharacter,
   makeAuthHeader,
   makeExpected,
   clearTable,
