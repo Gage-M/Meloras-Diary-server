@@ -14,11 +14,13 @@ const  xss  = require('xss');
  race               | text                     |           | not null |                                  | extended |              |
  background         | text                     |           | not null |                                  | extended |              |
  alignment          | alignment_choice         |           | not null | 'Neutral'::alignment_choice      | plain    |              |
+ gender             | gender_choice            |           | not null | 'Female'::gender_choice          | plain    |              |
  personality_traits | text                     |           | not null |                                  | extended |              |
  ideals             | text                     |           | not null |                                  | extended |              |
  fears              | text                     |           | not null |                                  | extended |              |
  notes              | text                     |           | not null |                                  | extended |              |
 
+ 
 oof = {
     select(
         'char.date_created',

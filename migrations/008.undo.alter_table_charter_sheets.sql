@@ -18,9 +18,10 @@ DROP COLUMN sleight_of_hand_expertise,
 DROP COLUMN stealth_expertise,
 DROP COLUMN survival_expertise;
 
+ALTER TABLE weapon_details
+DROP COLUMN attack_bonus;
 
 ALTER TABLE weapon_details
-DROP COLUMN attack_bonus,
-ADD COLUMN attack_bonus INTEGER CHECK (attack_bonus > 0 ) NOT NULL; 
+ADD COLUMN attack_bonus INTEGER CHECK (attack_bonus > 0 ) NOT NULL DEFAULT 1 ; 
 
 DROP TYPE skill_types;
