@@ -19,7 +19,7 @@ UserRouter
         res.json(items.map(serializeUser));
       });
   })
-  .post( (req,res,next) => {
+  .post( express.json(), (req,res,next) => {
     const {user_name, irl_name, user_password } = req.body;
     const  newUser = {user_name, irl_name, user_password };
 
@@ -65,7 +65,7 @@ UserRouter
 UserRouter
   .route('/:user_id')
   .all(checkIfUserExists)
-  .patch((req,res,next)=>{
+  .patch( express.json(), (req,res,next)=>{
     const {user_name, user_password, irl_name, date_created} = req.body;
     const updateInfo = {user_name, user_password, irl_name};
 

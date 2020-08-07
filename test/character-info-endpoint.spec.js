@@ -1,10 +1,13 @@
 const knex = require('knex');
 const app =require('../src/app');
 const helpers = require('./testHelper');
+const { expect } = require('chai');
+const supertest = require('supertest');
+const { beforeEach } = require('mocha');
 
 
 
-describe('Character_info Endpoint', ()=> {
+describe('character Endpoint', ()=> {
   let db;
 
   const {
@@ -34,7 +37,7 @@ describe('Character_info Endpoint', ()=> {
         helpers.seedCharacterTable(db,testUsers,testCharacters)
       );
 
-
+      /*VERY ODD ERROR vvvvv return player_id incremented  */
       it('should reply with a 200 and an array of content', () =>{
         return supertest(app)
           .get('/api/character')
@@ -54,44 +57,50 @@ describe('Character_info Endpoint', ()=> {
   });
 
   describe('POST /api/character', () =>{
+   
     context('when posting content with all needed fields filled... ', ()=>{
-      it('it should send 204 and return content as a confirmation', () =>{
-            
-        const testUser = testUsers[0];
 
-        const newCharacter = {
-          player_id : testUser.id ,
-          character_name :'new user' ,
-          race : 'human',
-          background : 't-pose town folk',
-          alignment : 'Neutral',/*ENUM*/
-          gender : 'Male', /*ENUM*/
-          personality_traits : `
-                    Im 'walking
-                    Im 'non faciam a vobis neque ab aliis ad insaniam convertunt
-                    Im 'walking
-                    Donec inveniam ambulans me`,
-          ideals : `
-                    Interdum suus 'optimus pugna dare sursum
-                    Quod est magni vere scio quod Im rectum`,
-          fears : `Quod suus 'difficile celare me et te
-                    Quod suus 'sic profundus intus esse mentitus
-                    Tibi gratias ago pro auxilio
-                    Sed nihil melius est non inveniet
-                    In hoc mundo pulchra
-                    Et non ambulant in sempiternum` ,
-          notes : 'A. Cornelius et voluit dare tantum cervo',
+      beforeEach('inserts content', ()=> 
+        helpers.seedCharacterTable(db,testUsers,testCharacters)
+      );
+
+      it('it should send 201 and return content as a confirmation', () =>{
+            
+      const testUser = testUsers[0];
+
+      const newCharacter = {
+        player_id : testUser.id ,
+        character_name :'new user' ,
+        race : 'human',
+        background : 't-pose town folk',
+        alignment : 'Neutral',/*ENUM*/
+        gender : 'Male', /*ENUM*/
+        personality_traits : `
+                  Im 'walking
+                  Im 'non faciam a vobis neque ab aliis ad insaniam convertunt
+                  Im 'walking
+                  Donec inveniam ambulans me`,
+        ideals : `
+                  Interdum suus 'optimus pugna dare sursum
+                  Quod est magni vere scio quod Im rectum`,
+        fears : `Quod suus 'difficile celare me et te
+                  Quod suus 'sic profundus intus esse mentitus
+                  Tibi gratias ago pro auxilio
+                  Sed nihil melius est non inveniet
+                  In hoc mundo pulchra
+                  Et non ambulant in sempiternum` ,
+        notes : 'A. Cornelius et voluit dare tantum cervo',
         };
 
         return supertest(app)
           .post('/api/character')
           .set('Authorization' , helpers.makeAuthHeader(testUsers[0]))
-          .send(newCharacter)
+          .send({newCharacter})
           .expect(201)
           .expect(res => {
             expect(res.body).to.have.property('id');
             expect(res.body.player_id).to.eql(newCharacter.player_id);
-            expect(res.body.character_name).to.eql(newCharacter).character_name;
+            expect(res.body.character_name).to.eql(newCharacter.character_name);
             expect(res.body.race).to.eql(newCharacter.race);
             expect(res.body.background).to.eql(newCharacter.background);
             expect(res.body.alignment).to.eql(newCharacter.alignment);
@@ -100,7 +109,7 @@ describe('Character_info Endpoint', ()=> {
             expect(res.body.ideals).to.eql(newCharacter.ideals);
             expect(res.body.fears).to.eql(newCharacter.fears);
             expect(res.body.notes).to.eql(newCharacter.notes);
-            expect(res.header.location).to.eql(`api/character/${res.body.id}`);
+            expect(res.header.location).to.eql(`/api/character/${res.body.id}`);
             const expectedDate = new Date().toLocaleDateString();
             const actualDate = new Date(res.body.date_created).toLocaleDateString();
             expect(actualDate).to.eql(expectedDate);
@@ -112,19 +121,18 @@ describe('Character_info Endpoint', ()=> {
               .where({id : res.body.id})
               .first()
               .then( row => {
-                expect(row.body.player_id).to.eql(newCharacter.player_id);
-                expect(row.body.character_name).to.eql(newCharacter).character_name;
-                expect(row.body.race).to.eql(newCharacter.race);
-                expect(row.body.background).to.eql(newCharacter.background);
-                expect(row.body.alignment).to.eql(newCharacter.alignment);
-                expect(row.body.gender).to.eql(newCharacter.gender);
-                expect(row.body.personality_traits).to.eql(newCharacter.personality_traits);
-                expect(row.body.ideals).to.eql(newCharacter.ideals);
-                expect(row.body.fears).to.eql(newCharacter.fears);
-                expect(row.body.notes).to.eql(newCharacter.notes);
-                expect(row.header.location).to.eql(`api/character/${row.body.id}`);
+                expect(row.player_id).to.eql(newCharacter.player_id);
+                expect(row.character_name).to.eql(newCharacter.character_name);
+                expect(row.race).to.eql(newCharacter.race);
+                expect(row.background).to.eql(newCharacter.background);
+                expect(row.alignment).to.eql(newCharacter.alignment);
+                expect(row.gender).to.eql(newCharacter.gender);
+                expect(row.personality_traits).to.eql(newCharacter.personality_traits);
+                expect(row.ideals).to.eql(newCharacter.ideals);
+                expect(row.fears).to.eql(newCharacter.fears);
+                expect(row.notes).to.eql(newCharacter.notes);
                 const expectedDate = new Date().toLocaleDateString();
-                const actualDate = new Date(row.body.date_created).toLocaleDateString();
+                const actualDate = new Date(row.date_created).toLocaleDateString();
                 expect(actualDate).to.eql(expectedDate);
               })
           );
@@ -133,31 +141,130 @@ describe('Character_info Endpoint', ()=> {
     });
   });
 
-  //   describe('GET api/charter/:charter_id', () =>{
-  //       context('[METHOD TYPE] ', ()=>{
-  //         it('[it should do.....]', () =>{
-  //             return supertest(app)
-  //                 ./*method*/
-  //         })
-  //       })
-  //   })
+  describe('GET api/charter/:charter_id', () =>{
 
-  //   describe('PATCH api/character/:charter_id', () =>{
-  //     context('[METHOD TYPE] ', ()=>{
-  //       it('[it should do.....]', () =>{
-  //           return supertest(app)
-  //               ./*method*/
-  //       })
-  //     })
-  // })
-  // describe('DELETE api/character/:charter_id', () =>{
-  //     context('[METHOD TYPE] ', ()=>{
-  //       it('[it should do.....]', () =>{
-  //           return supertest(app)
-  //               ./*method*/
-  //       })
-  //     })
-  // })
+    context('given there is content', ()=>{
+      beforeEach('insert content', () =>{
+        helpers.seedCharacterTable(
+          db,
+          testUsers,
+          testCharacters,
+        );
+      });
+
+      it('it should retrieve target', () =>{
+        const target = 1 ;
+        const expectedCharacter = helpers.makeExpectedCharacter(target,testCharacters,);
+
+        return supertest(app)
+          .get(`/api/character/${target}`)
+          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+          .expect(200,expectedCharacter);
+      });
+    });
+
+    context('given an XSS attack article', ()=>{
+      const testUser = helpers.makeUsersArray()[1];
+      const {
+        maliciousCharacter,
+        expectedCharacter,
+      } = helpers.makeMaliciousCharacter(testUser);
+
+      beforeEach('insert malicious character', () =>{
+        return helpers.seedMaliciousCharacter(
+          db,
+          testUser,
+          maliciousCharacter,
+        )
+      })
+
+      it('it should remove the XSS  content', () =>{
+        return supertest(app)
+          .get(`/api/character/${maliciousCharacter.id}`)
+          .set('Authorization', helpers.makeAuthHeader(testUser))
+          .expect(200)
+          .expect(res => {
+            expect(res.body.character_name).to.eql(expectedCharacter.character_name);
+            expect(res.body.race).to.eql(expectedCharacter.race);
+          });
+      });
+    });
+  });
+
+    describe.only('PATCH api/character/:charter_id', () =>{
+
+      context('given an id and patch info ', ()=>{
+        beforeEach('insert content into database', () => {
+           helpers.seedCharacterTable(
+            db,
+            testUsers,
+            testCharacters,
+        );
+      })
+      
+        it('update the content , and send a 204', () =>{
+
+        const idToUpdate = 3 ; 
+        const updatedCharacter = {
+            player_id : 1 ,
+            character_name : 'updated name ' ,
+            race : 'duck',
+            background : 't-pose town folk',
+            alignment : 'Neutral',/*ENUM*/
+            gender : 'Other', /*ENUM*/
+            personality_traits : 'test 333',
+            ideals : 'update ideals',
+            fears : 'test 333' ,
+            notes : 'test 333',
+        }
+        const expectedCharacter = {
+            ...testUsers[idToUpdate - 1],
+            ...updatedCharacter
+        }
+            return supertest(app)
+                .patch(`/api/character/${idToUpdate}`)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                .send(updatedCharacter)
+                .expect(204)
+                .then(res => 
+                  supertest(app)
+                  .get(`/api.character/${idToUpdate}`)
+                  .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                  .expect(expectedCharacter)
+                  )
+        })
+      })
+  })
+  describe.only('DELETE api/character/:charter_id', () =>{
+
+
+
+      context('given an valid target to delete it should', ()=>{
+
+        beforeEach('insert content into database', () => {
+          helpers.seedCharacterTable(
+           db,
+           testUsers,
+           testCharacters,
+       );
+     })
+
+        it('remove target content', () =>{
+          const idToRemove = 1;
+          const expectedCharacterArray = testCharacters.filter(char => char.id !== idToRemove)
+
+            return supertest(app)
+                .delete(`/api/character/${idToRemove}`)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                .expect(204)
+                .then(res => 
+                  supertest(app)
+                  .get('/api/character')
+                  .expect(expectedCharacterArray)
+                )
+        })
+      })
+  })
 
 
 

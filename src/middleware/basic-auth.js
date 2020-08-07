@@ -1,4 +1,3 @@
-const bcrypt = require('bcryptjs');
 const AuthService = require('../auth/auth-service');
 
 module.exports = function requiresAuth(req,res,next){

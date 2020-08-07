@@ -54,7 +54,7 @@ TRUNCATE
 
 INSERT INTO diary_users(irl_name,user_name,user_password)
 VALUES
-    ('anon', 'anyone', 'password' )
+    ('anon', 'anyone', 'password' ),
     ('gage','nomad','ligma'),
     ('ty','sat','sat-password'),
     ('dave','worm','worm-password'),

@@ -70,7 +70,6 @@ CharacterInfoRouter
 
 CharacterInfoRouter
   .route('/:character_id')
-  
   .all(checkIfCharacterExists)
   .get( (req,res,next)=>{
     res.json(serializeCharacter(res.char));

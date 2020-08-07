@@ -16,11 +16,15 @@ const seedCharacterTable = (db, users, characters=[]) => {
     await trx.into('character_info').insert(characters);
 
     await trx.raw(
-      `SELECT setval('diary_users_id_seq', ?)`,
+      `SELECT setval('character_info_id_seq', ?)`,
       [characters[characters.length - 1 ].id]
     );
   });
 }; 
+
+const makeExpectedCharacter =( id ,characters)=>{
+  return characters.find(character=> character.id === id);
+};
 
 const makeUsersArray = () => {
   return [
@@ -29,36 +33,30 @@ const makeUsersArray = () => {
       irl_name: 'Test user 1',
       user_name: 'test-user-1',
       user_password: 'password',
-      date_created: new Date('2029-01-22T16:28:32.615Z'),
+      date_created: '2029-01-22T16:28:32.615Z',
     },
     {
       id: 2,
       irl_name: 'Test user 2',
       user_name: 'test-user-2',
       user_password: 'password',
-      date_created: new Date('2029-01-22T16:28:32.615Z'),
+      date_created: '2029-01-22T16:28:32.615Z',
     },
     {
       id: 3,
       irl_name: 'Test user 3',
       user_name: 'test-user-3',
       user_password: 'password',
-      date_created: new Date('2029-01-22T16:28:32.615Z'),
+      date_created: '2029-01-22T16:28:32.615Z',
     },
     {
       id: 4,
       irl_name: 'Test user 4',
       user_name: 'test-user-4',
       user_password: 'password',
-      date_created: new Date('2029-01-22T16:28:32.615Z'),
+      date_created: '2029-01-22T16:28:32.615Z',
     },
   ];
-};
-
-const makeCharacterFixtures = () => {
-  const testUsers = makeUsersArray();
-  const testCharacters = makeCharacterArray(testUsers);
-  return { testUsers, testCharacters };
 };
 
 const makeCharacterArray = () => {
@@ -136,6 +134,12 @@ const makeCharacterArray = () => {
   ];
 };
 
+const makeCharacterFixtures = () => {
+  const testUsers = makeUsersArray();
+  const testCharacters = makeCharacterArray(testUsers);
+  return { testUsers, testCharacters };
+};
+
 const makeExpectedUserCharacter = () => {
 
 
@@ -167,20 +171,94 @@ const clearTable = (db) => {
   );
 };
 
+const makeMaliciousCharacter = user => {
+  const maliciousCharacter = {
+    id: 911,
+    player_id : user.id ,
+    date_created : new Date() ,
+    character_name : 'Naughty naughty very naughty <script>alert("xss");</script>' ,
+    race : 'Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.',
+    background : 't-pose town folk',
+    alignment : 'Neutral',/*ENUM*/
+    gender : 'Other', /*ENUM*/
+    personality_traits : 'test 1',
+    ideals : 'test 1',
+    fears : 'test 1' ,
+    notes : 'test 1',
+  };
 
+  const expectedCharacter = {
+    id: 911,
+    player_id : user.id ,
+    date_created : new Date() ,
+    character_name : 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
+    race : 'Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.',
+    background : 't-pose town folk',
+    alignment : 'Neutral',/*ENUM*/
+    gender : 'Other', /*ENUM*/
+    personality_traits : 'test 1',
+    ideals : 'test 1',
+    fears : 'test 1' ,
+    notes : 'test 1',
+  };
+  
+    
 
-const seedMaliciousCharacter = () => {};
+  return{
+    maliciousCharacter,
+    expectedCharacter
+  };
+};
 
+const seedMaliciousCharacter = (db , user, character=[]) => {
+  return seedUsers(db, [user])
+    .then(()=> 
+      db
+        .into('character_info')
+        .insert([character])
+    );
+};
+
+const makeMaliciousUser =()=>{
+  const maliciousUser = {
+    id: 911 ,
+    user_name : 'Naughty naughty very naughty <script>alert("xss");</script>' ,
+    irl_name : 'Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.',
+    password : 'Malicious',
+    date_created : new Date ()
+  };
+  const expectedUser = {
+    id: 911 ,
+    user_name : 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
+    irl_name : 'Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.',
+    password : 'Malicious',
+    date_created : new Date ()
+
+  };
+
+  return {
+    maliciousUser,
+    expectedUser
+  };
+};
+
+const seedMaliciousUser = (db, user) => {
+  return seedUsers(db, [user]);
+};
 
 module.exports = {
   seedUsers,
   makeUsersArray,
   makeCharacterFixtures,
   makeCharacterArray,
+  makeMaliciousCharacter,
   makeExpectedUserCharacter,
   makeAuthHeader,
   makeExpected,
+  makeMaliciousUser,
+  makeExpectedCharacter,
   clearTable,
+  seedMaliciousUser,
   seedCharacterTable,
   seedMaliciousCharacter,
 };

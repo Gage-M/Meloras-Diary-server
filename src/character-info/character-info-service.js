@@ -93,7 +93,7 @@ const CharacterInfoService = {
   serializeCharacter(char){
     return{
       id:char.id ,
-      player_id: char.id ,
+      player_id: char.player_id ,
       date_created: new Date(char.date_created) ,
       character_name: xss(char.character_name) ,
       race: xss(char.race) ,
