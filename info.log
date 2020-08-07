@@ -76,3 +76,6 @@
 {"message":"call to :character_id == 3","level":"error"}
 {"message":"call to :character_id == 1","level":"error"}
 {"message":"call to :character_id == 1","level":"error"}
+{"message":"call to :character_id == 1","level":"error"}
+{"message":"call to :character_id == 3","level":"error"}
+{"message":"call to :character_id == 1","level":"error"}

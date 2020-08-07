@@ -191,7 +191,7 @@ describe('character Endpoint', ()=> {
     });
   });
 
-    describe.only('PATCH api/character/:charter_id', () =>{
+    describe('PATCH api/character/:charter_id', () =>{
 
       context('given an id and patch info ', ()=>{
         beforeEach('insert content into database', () => {
@@ -235,7 +235,7 @@ describe('character Endpoint', ()=> {
         })
       })
   })
-  describe.only('DELETE api/character/:charter_id', () =>{
+  describe('DELETE api/character/:charter_id', () =>{
 
 
 
