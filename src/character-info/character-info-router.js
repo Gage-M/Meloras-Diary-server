@@ -74,7 +74,7 @@ CharacterInfoRouter
   .get( (req,res,next)=>{
     res.json(serializeCharacter(res.char));
   })
-  .patch((req,res,next) => {
+  .patch( express.json(), (req,res,next) => {
     const {
       player_id,
       date_created,
@@ -127,7 +127,7 @@ CharacterInfoRouter
       req.app.get('db'),
       req.params.character_id
     )
-      .then(char => {
+      .then(() => {
         res.status(204).end();
       })
       .catch(next);
