@@ -48,7 +48,6 @@ const UserService = {
 
   serializeCharacterOfUser(char){
     const { player_info } = char ; 
-    console.log('char @ player_info is ===', player_info.user_name);
     return{
       id:char.id ,
       player_id: char.id ,
