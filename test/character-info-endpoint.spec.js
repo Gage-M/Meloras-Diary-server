@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 const knex = require('knex');
 const app =require('../src/app');
 const helpers = require('./testHelper');
@@ -141,6 +142,7 @@ describe('character Endpoint', ()=> {
   describe('GET api/charter/:charter_id', () =>{
 
     context('given there is content', ()=>{
+     
       beforeEach('insert content', () =>{
         helpers.seedCharacterTable(
           db,
@@ -188,56 +190,56 @@ describe('character Endpoint', ()=> {
     });
   });
 
-  //   describe('PATCH api/character/:charter_id', () =>{
+    describe('PATCH api/character/:charter_id', () =>{
 
-  //     context('given an id and patch info ', ()=>{
-  //       beforeEach('insert content into database', () => {
-  //          helpers.seedCharacterTable(
-  //           db,
-  //           testUsers,
-  //           testCharacters,
-  //       );
-  //     })
+      context('given an id and patch info ', ()=>{
+        beforeEach('insert content into database', () => {
+           return helpers.seedCharacterTable(
+            db,
+            testUsers,
+            testCharacters,
+        );
+      })
       
-  //       it('update the content , and send a 204', () =>{
+        it('update the content , and send a 204', () =>{
 
-  //       const idToUpdate = 3 ; 
-  //       const updatedCharacter = {
-  //           player_id : 1 ,
-  //           character_name : 'updated name ' ,
-  //           race : 'duck',
-  //           background : 't-pose town folk',
-  //           alignment : 'Neutral',/*ENUM*/
-  //           gender : 'Other', /*ENUM*/
-  //           personality_traits : 'test 333',
-  //           ideals : 'update ideals',
-  //           fears : 'test 333' ,
-  //           notes : 'test 333',
-  //       }
-  //       const expectedCharacter = {
-  //           ...testCharacters[idToUpdate - 1],
-  //           ...updatedCharacter
-  //       }
-  //           return supertest(app)
-  //               .patch(`/api/character/${idToUpdate}`)
-  //               .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-  //               .send(updatedCharacter)
-  //               .expect(204)
-  //               .then(res => 
-  //                 supertest(app)
-  //                 .get(`/api/character/${idToUpdate}`)
-  //                 .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-  //                 .expect(expectedCharacter)
-  //                 )
-  //       })
-  //     })
-  // })
+        const idToUpdate = 3 ; 
+        const updatedCharacter = {
+            player_id : 1 ,
+            character_name : 'updated name ' ,
+            race : 'duck',
+            background : 't-pose town folk',
+            alignment : 'Neutral',/*ENUM*/
+            gender : 'Other', /*ENUM*/
+            personality_traits : 'test 333',
+            ideals : 'update ideals',
+            fears : 'test 333' ,
+            notes : 'test 333',
+        }
+        const expectedCharacter = {
+            ...testCharacters[idToUpdate - 1],
+            ...updatedCharacter
+        }
+            return supertest(app)
+                .patch(`/api/character/${idToUpdate}`)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                .send(updatedCharacter)
+                .expect(204)
+                .then(res => 
+                  supertest(app)
+                  .get(`/api/character/${idToUpdate}`)
+                  .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                  .expect(expectedCharacter)
+                  )
+        })
+      })
+  })
   describe('DELETE api/character/:charter_id', () =>{
 
     context('given an valid target to delete it should', ()=>{
 
       beforeEach('insert content into database', () => {
-        helpers.seedCharacterTable(
+       return helpers.seedCharacterTable(
           db,
           testUsers,
           testCharacters,
