@@ -48,7 +48,7 @@ VALUES
     ('gage','nomad','ligma'),
     ('ty','sat','sat-password'),
     ('dave','worm','worm-password'),
-    ('anon', 'anyone', 'password' ),
+    ('anon', 'anyone', 'Q2yG7KgVp3/!a&~j' ),
     ('holly','cast','cast-password');
 
 /*                                                        Table "public.character_info"
@@ -94,7 +94,7 @@ VALUES
     (3,
     'Bright Phelaia',
     'Tiefling',
-    'Criminal',
+    'Criminal-FenceKeeper',
     'Chaotic-Neutral',
     'Female',
     'there is nothing better then haveing good friends, regardles of who they are',
@@ -116,7 +116,7 @@ VALUES
     (2,
     'Durlok BrightHammer',
     'Hill Dwarf',
-    'Guild Artisan',
+    'Stone Hall Leader',
     'Chaotic-Good',
     'Male',
     'I like to talk about my profession... At Length',
