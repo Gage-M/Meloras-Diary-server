@@ -1,6 +1,40 @@
 # Meloras diary
 ## a  NPC charter  management system for Dungeons & Dragons 5e
 
+## endpoints 
+
+`/api/character` 
+   - GET : get all users and sends back a 200 response  [no __auth__ needed] ,
+   - POST : insert an new characters with the player id == auth users id and sends back a 201 response   [__auth__ needed]
+
+
+`/api/character/:[char_id]`  
+   - GET : get character that has the id of `[char_id]` and sends back a 200 response  [no __auth__ needed],
+   - PATCH : update character that has an id of `[char_id]` and sends back a 204 response  [__auth__ needed],
+   - DELETE : delete character that has an id of `[char_id]` and sends back a 204 response  [__auth__ needed]
+
+
+`/api/user`  
+   - GET : get all users in database and sends back a 200 response ,
+   - POST : crate a new user and sends back a 201 response 
+
+
+`/api/user/authKey`  
+   - GET : get user based on the contents of the authKey in they header of the GET request and sends back a 200 response ,
+
+
+`/api/user/:[user_id]`
+    - PATCH : update user that has an id of `[user_id]` and sends back a 204 response  [__auth__ needed],
+    - DELETE : delete user that has an id of `[user_id]`  and sends back a 204 response [__auth__ needed],
+
+
+`/api/user/:[user_id]/character` - 
+    - GET : gets all the character made by `[user_id]`  and sends back a 200 response
+
+
+
+
+## info
 
 this is the api client for the Dungeons and Dragons NPC chararter management system called Meloras diary 
 
